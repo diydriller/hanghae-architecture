@@ -1,21 +1,15 @@
-package io.hhplus.architecture.domain.lecture
+package io.hhplus.architecture.domain.lecture.model
 
-import io.hhplus.architecture.domain.model.common.BaseModel
-import io.hhplus.architecture.domain.user.User
+import io.hhplus.architecture.domain.common.model.BaseModel
 import jakarta.persistence.*
-import java.time.LocalDateTime
 
 @Entity
 class Enrollment(
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    val user: User,
+    val userId: Long,
 
     @ManyToOne
-    @JoinColumn(name = "schedule_id")
-    var schedule: Schedule,
-
-    var date: LocalDateTime
+    @JoinColumn(name = "lecture_schedule_id")
+    val lectureSchedule: LectureSchedule,
 ) : BaseModel() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,4 +17,8 @@ class Enrollment(
 
     @Enumerated(EnumType.STRING)
     var status: LectureStatus = LectureStatus.PENDING
+
+    enum class LectureStatus {
+        CANCELED, PENDING, CONFIRMED
+    }
 }
