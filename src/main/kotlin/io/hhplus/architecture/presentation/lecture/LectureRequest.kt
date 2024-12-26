@@ -1,5 +1,6 @@
 package io.hhplus.architecture.presentation.lecture
 
+import io.hhplus.architecture.application.lecture.LectureCriteria
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -8,7 +9,14 @@ class LectureRequest {
         val title: String,
 
         val description: String,
-    )
+    ) {
+        fun toCriteria(): LectureCriteria.CreateLecture {
+            return LectureCriteria.CreateLecture(
+                title = title,
+                description = description
+            )
+        }
+    }
 
     data class ScheduleLecture(
         val capacity: Int,
@@ -22,5 +30,17 @@ class LectureRequest {
         val date: LocalDate,
 
         val time: LocalTime
-    )
+    ) {
+        fun toCriteria(lectureId: Long): LectureCriteria.ScheduleLecture {
+            return LectureCriteria.ScheduleLecture(
+                capacity = capacity,
+                instructorId = instructorId,
+                location = location,
+                durationMinute = durationMinute,
+                date = date,
+                time = time,
+                lectureId = lectureId
+            )
+        }
+    }
 }

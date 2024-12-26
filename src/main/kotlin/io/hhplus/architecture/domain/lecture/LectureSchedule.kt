@@ -1,4 +1,4 @@
-package io.hhplus.architecture.domain.lecture.model
+package io.hhplus.architecture.domain.lecture
 
 import jakarta.persistence.*
 import java.time.LocalDate

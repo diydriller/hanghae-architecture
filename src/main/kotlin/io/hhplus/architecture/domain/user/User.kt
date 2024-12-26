@@ -1,6 +1,6 @@
 package io.hhplus.architecture.domain.user
 
-import io.hhplus.architecture.domain.common.model.BaseModel
+import io.hhplus.architecture.domain.BaseModel
 import jakarta.persistence.*
 
 @Entity

@@ -1,4 +1,4 @@
-package io.hhplus.architecture.domain.common.model
+package io.hhplus.architecture.domain
 
 import jakarta.persistence.EntityListeners
 import jakarta.persistence.MappedSuperclass
