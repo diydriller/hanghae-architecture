@@ -144,4 +144,46 @@ class LectureServiceUnitTest {
             lectureService.applyLecture(scheduleId, userId)
         }
     }
+
+    @DisplayName("정원 초과한 특강 신청 실패 테스트")
+    @Test
+    fun exceedCapacityFailTest(){
+        // given
+        val userId = 1L
+        val scheduleId = 1L
+
+        val criteria = LectureCriteria.ScheduleLecture(
+            capacity = 20,
+            instructorId = 1L,
+            location = "seoul",
+            durationMinute = 120,
+            date = LocalDate.of(2025, 1, 20),
+            time = LocalTime.of(16, 30),
+            lectureId = 1L
+        )
+        val savedLecture = Lecture(
+            title = "test",
+            description = "test",
+        )
+        savedLecture.id = 1L
+
+        val savedLectureSchedule = LectureSchedule(
+            capacity = criteria.capacity,
+            instructorId = criteria.instructorId,
+            location = criteria.location,
+            durationMinute = criteria.durationMinute,
+            date = criteria.date,
+            time = criteria.time,
+            lecture = savedLecture
+        )
+        savedLectureSchedule.id = scheduleId
+        savedLectureSchedule.enrollmentCount = 20
+
+        `when`(lectureStore.getLectureScheduleForUpdate(scheduleId)).thenReturn(savedLectureSchedule)
+
+        // when & then
+        assertThrows(BaseException::class.java) {
+            lectureService.applyLecture(scheduleId, userId)
+        }
+    }
 }
