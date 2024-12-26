@@ -47,4 +47,14 @@ class LectureController(
         }
         return BaseResponse(response)
     }
+
+    @PostMapping("/schedule/{scheduleId}")
+    fun applyLecture(
+        @PathVariable scheduleId: Long,
+        @RequestBody request: LectureRequest.ApplyLecture
+    ): BaseResponse<LectureResponse.GetLectureSchedule> {
+        val schedule = lectureService.applyLecture(scheduleId, request.userId)
+        val response = LectureResponse.GetLectureSchedule.fromLectureSchedule(schedule)
+        return BaseResponse(response)
+    }
 }

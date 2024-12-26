@@ -21,4 +21,9 @@ class Enrollment(
     enum class LectureStatus {
         CANCELED, PENDING, CONFIRMED
     }
+
+    fun enroll(){
+        lectureSchedule.enrollmentCount++
+        status = LectureStatus.CONFIRMED
+    }
 }

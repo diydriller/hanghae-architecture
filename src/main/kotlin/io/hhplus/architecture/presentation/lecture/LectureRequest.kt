@@ -43,4 +43,8 @@ class LectureRequest {
             )
         }
     }
+
+    data class ApplyLecture(
+        val userId: Long
+    )
 }

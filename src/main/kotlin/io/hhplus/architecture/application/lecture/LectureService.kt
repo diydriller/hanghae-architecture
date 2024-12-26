@@ -1,8 +1,12 @@
 package io.hhplus.architecture.application.lecture
 
+import io.hhplus.architecture.domain.lecture.Enrollment
 import io.hhplus.architecture.domain.lecture.Lecture
 import io.hhplus.architecture.domain.lecture.LectureSchedule
 import io.hhplus.architecture.domain.lecture.LectureStore
+import io.hhplus.architecture.exception.BaseException
+import io.hhplus.architecture.response.BaseResponseStatus
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 
@@ -34,5 +38,23 @@ class LectureService(
 
     fun getPossibleLecture(date: LocalDate): List<LectureSchedule> {
         return lectureStore.getLectureForDate(date)
+    }
+
+    @Transactional
+    fun applyLecture(scheduleId: Long, userId: Long): LectureSchedule {
+        val lectureSchedule = lectureStore.getLectureScheduleForUpdate(scheduleId)
+        if (lectureSchedule.enrollmentCount >= lectureSchedule.capacity) {
+            throw BaseException(BaseResponseStatus.EXCEED_CAPACITY)
+        }
+        if (lectureStore.existEnrollment(userId, lectureSchedule)) {
+            throw BaseException(BaseResponseStatus.ALREADY_EXISTED_ENROLLMENT)
+        }
+        val enrollment = Enrollment(
+            userId,
+            lectureSchedule
+        )
+        enrollment.enroll()
+        lectureStore.saveEnrollment(enrollment)
+        return lectureStore.saveLectureSchedule(lectureSchedule)
     }
 }
