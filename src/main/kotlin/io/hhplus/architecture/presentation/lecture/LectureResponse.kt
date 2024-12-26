@@ -53,4 +53,43 @@ class LectureResponse {
             }
         }
     }
+
+    data class GetLectureSchedule(
+        val lectureId: Long,
+
+        val scheduleId: Long,
+
+        var title: String,
+
+        var description: String,
+
+        var capacity: Int,
+
+        var instructorId: Long,
+
+        var location: String,
+
+        var durationMinute: Int,
+
+        val date: String,
+
+        val time: String
+    ) {
+        companion object {
+            fun fromLectureSchedule(lectureSchedule: LectureSchedule): GetLectureSchedule {
+                return GetLectureSchedule(
+                    lectureId = lectureSchedule.lecture.id ?: throw IllegalStateException("Id must not be null"),
+                    scheduleId = lectureSchedule.id ?: throw IllegalStateException("Id must not be null"),
+                    title = lectureSchedule.lecture.title,
+                    description = lectureSchedule.lecture.description,
+                    capacity = lectureSchedule.capacity,
+                    instructorId = lectureSchedule.instructorId,
+                    location = lectureSchedule.location,
+                    durationMinute = lectureSchedule.durationMinute,
+                    date = lectureSchedule.date.toString(),
+                    time = lectureSchedule.time.toString()
+                )
+            }
+        }
+    }
 }

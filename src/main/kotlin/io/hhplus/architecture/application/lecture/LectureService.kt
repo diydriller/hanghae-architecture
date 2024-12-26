@@ -4,6 +4,7 @@ import io.hhplus.architecture.domain.lecture.Lecture
 import io.hhplus.architecture.domain.lecture.LectureSchedule
 import io.hhplus.architecture.domain.lecture.LectureStore
 import org.springframework.stereotype.Service
+import java.time.LocalDate
 
 @Service
 class LectureService(
@@ -29,5 +30,9 @@ class LectureService(
             lecture = lecture
         )
         return lectureStore.saveLectureSchedule(lectureSchedule)
+    }
+
+    fun getPossibleLecture(date: LocalDate): List<LectureSchedule> {
+        return lectureStore.getLectureForDate(date)
     }
 }

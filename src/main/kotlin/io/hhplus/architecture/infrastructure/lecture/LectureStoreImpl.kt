@@ -6,11 +6,12 @@ import io.hhplus.architecture.domain.lecture.LectureStore
 import io.hhplus.architecture.exception.BaseException
 import io.hhplus.architecture.response.BaseResponseStatus
 import org.springframework.stereotype.Component
+import java.time.LocalDate
 
 @Component
 class LectureStoreImpl(
     private val lectureJpaRepository: LectureJpaRepository,
-    private val lectureScheduleJpaRepository: LectureScheduleJpaRepository
+    private val lectureScheduleJpaRepository: LectureScheduleJpaRepository,
 ) : LectureStore {
 
     override fun saveLecture(lecture: Lecture): Lecture {
@@ -24,5 +25,10 @@ class LectureStoreImpl(
 
     override fun saveLectureSchedule(lectureSchedule: LectureSchedule): LectureSchedule {
         return lectureScheduleJpaRepository.save(lectureSchedule)
+    }
+
+    override fun getLectureForDate(date: LocalDate): List<LectureSchedule> {
+        return lectureScheduleJpaRepository.findAllByDate(date)
+
     }
 }

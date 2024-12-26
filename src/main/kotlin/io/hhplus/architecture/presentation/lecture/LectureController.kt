@@ -5,6 +5,8 @@ import io.hhplus.architecture.response.BaseResponse
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.WebDataBinder
 import org.springframework.web.bind.annotation.*
+import java.time.LocalDate
+
 
 @RestController
 class LectureController(
@@ -32,6 +34,17 @@ class LectureController(
     ): BaseResponse<LectureResponse.ScheduleLecture> {
         val lectureSchedule = lectureService.scheduleLecture(request.toCriteria(lectureId))
         val response = LectureResponse.ScheduleLecture.fromLectureSchedule(lectureSchedule)
+        return BaseResponse(response)
+    }
+
+    @GetMapping("/lecture")
+    fun getPossibleLecture(
+        @RequestParam date: LocalDate
+    ): BaseResponse<List<LectureResponse.GetLectureSchedule>> {
+        val scheduleList = lectureService.getPossibleLecture(date)
+        val response = scheduleList.map {
+            LectureResponse.GetLectureSchedule.fromLectureSchedule(it)
+        }
         return BaseResponse(response)
     }
 }
