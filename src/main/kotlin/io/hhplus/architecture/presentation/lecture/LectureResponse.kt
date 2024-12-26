@@ -73,7 +73,9 @@ class LectureResponse {
 
         val date: String,
 
-        val time: String
+        val time: String,
+
+        val enrollmentCount: Int
     ) {
         companion object {
             fun fromLectureSchedule(lectureSchedule: LectureSchedule): GetLectureSchedule {
@@ -87,7 +89,8 @@ class LectureResponse {
                     location = lectureSchedule.location,
                     durationMinute = lectureSchedule.durationMinute,
                     date = lectureSchedule.date.toString(),
-                    time = lectureSchedule.time.toString()
+                    time = lectureSchedule.time.toString(),
+                    enrollmentCount = lectureSchedule.enrollmentCount
                 )
             }
         }
