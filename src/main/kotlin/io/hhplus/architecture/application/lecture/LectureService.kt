@@ -57,4 +57,8 @@ class LectureService(
         lectureStore.saveEnrollment(enrollment)
         return lectureStore.saveLectureSchedule(lectureSchedule)
     }
+
+    fun getAppliedLecture(userId: Long): LectureSchedule {
+        return lectureStore.getAppliedLecture(userId)
+    }
 }

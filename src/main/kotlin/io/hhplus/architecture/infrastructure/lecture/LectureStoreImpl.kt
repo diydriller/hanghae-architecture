@@ -46,4 +46,11 @@ class LectureStoreImpl(
     override fun existEnrollment(userId: Long, lectureSchedule: LectureSchedule): Boolean {
         return lectureEnrollmentJpaRepository.existsByUserIdAndLectureSchedule(userId, lectureSchedule)
     }
+
+    override fun getAppliedLecture(userId: Long): LectureSchedule {
+        return lectureScheduleJpaRepository.findLectureScheduleByUserIdAndStatus(
+            userId,
+            Enrollment.LectureStatus.CONFIRMED
+        )
+    }
 }
