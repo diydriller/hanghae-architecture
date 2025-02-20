@@ -1,25 +1,30 @@
 package io.hhplus.architecture.domain.lecture
 
-import io.hhplus.architecture.domain.model.common.BaseModel
 import jakarta.persistence.*
-import java.time.LocalDateTime
+import java.time.LocalDate
+import java.time.LocalTime
 
 @Entity
-class Schedule(
+class LectureSchedule(
+    val instructorId: Long,
+
     var durationMinute: Int,
 
     var location: String,
 
-    var date: LocalDateTime,
+    var date: LocalDate,
+
+    var time: LocalTime,
+
+    var capacity: Int,
 
     @ManyToOne
     @JoinColumn(name = "lecture_id")
     val lecture: Lecture
-) : BaseModel() {
+) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
 
-    @OneToMany(mappedBy = "schedule")
-    var enrollmentList: MutableList<Enrollment> = mutableListOf()
+    var enrollmentCount: Int = 0
 }
