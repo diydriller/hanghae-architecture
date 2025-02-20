@@ -10,4 +10,5 @@ interface LectureStore {
     fun getLectureScheduleForUpdate(scheduleId: Long): LectureSchedule
     fun saveEnrollment(enrollment: Enrollment): Enrollment
     fun existEnrollment(userId: Long, lectureSchedule: LectureSchedule): Boolean
+    fun getAppliedLecture(userId: Long): LectureSchedule
 }

@@ -57,4 +57,13 @@ class LectureController(
         val response = LectureResponse.GetLectureSchedule.fromLectureSchedule(schedule)
         return BaseResponse(response)
     }
+
+    @GetMapping("/schedule/complete")
+    fun getAppliedLecture(
+        @RequestParam userId: Long
+    ): BaseResponse<LectureResponse.GetLectureSchedule> {
+        val schedule = lectureService.getAppliedLecture(userId)
+        val response = LectureResponse.GetLectureSchedule.fromLectureSchedule(schedule)
+        return BaseResponse(response)
+    }
 }

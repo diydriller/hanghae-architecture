@@ -63,7 +63,7 @@ class LectureServiceIntegrationTest : BaseIntegrationTest() {
                     successCount.incrementAndGet()
                 } catch (e: Exception) {
                     failureCount.incrementAndGet()
-                }finally {
+                } finally {
                     userId.incrementAndGet()
                 }
             }
@@ -75,5 +75,51 @@ class LectureServiceIntegrationTest : BaseIntegrationTest() {
         assertEquals(10, failureCount.get())
     }
 
+
+    @DisplayName("동일 유저가 동일 특강을 5번 신청할때 4번 실패하는 테스트")
+    @Test
+    fun applySameLectureWithSameUserFailTest() {
+        // given
+        val lecture = Lecture(
+            "test",
+            "test"
+        )
+        val savedLecture = lectureJpaRepository.save(lecture)
+        val lectureSchedule = LectureSchedule(
+            1L,
+            120,
+            "seoul",
+            LocalDate.of(2025, 1, 20),
+            LocalTime.of(18, 30),
+            30,
+            savedLecture
+        )
+        val savedLectureSchedule = lectureScheduleJpaRepository.save(lectureSchedule)
+
+        // when
+        val taskCount = 5
+        val successCount = AtomicInteger(0)
+        val failureCount = AtomicInteger(0)
+        val userId = 3L
+
+        val futureArray = Array(taskCount) {
+            CompletableFuture.runAsync {
+                try {
+                    lectureService.applyLecture(
+                        savedLectureSchedule.id ?: throw IllegalStateException("Id must not be null"),
+                        userId
+                    )
+                    successCount.incrementAndGet()
+                } catch (e: Exception) {
+                    failureCount.incrementAndGet()
+                }
+            }
+        }
+        CompletableFuture.allOf(*futureArray).join()
+
+        // then
+        assertEquals(1, successCount.get())
+        assertEquals(4, failureCount.get())
+    }
 
 }
